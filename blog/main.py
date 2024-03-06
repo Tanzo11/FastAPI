@@ -1,13 +1,13 @@
 
 from fastapi import FastAPI
 from database import engine
-import models
+import schema
 from routers import blog, user, authentication
 
 
 app = FastAPI()
 
-models.Base.metadata.create_all(engine)
+schema.Base.metadata.create_all(engine)
 
 
 app.include_router(authentication.router)
