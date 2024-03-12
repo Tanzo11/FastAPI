@@ -7,8 +7,9 @@ def get_all(fast_db: Session):
     return blogs
 
 
-def create(request: models.Blog,fastdb: Session):
-    new_blog = schema.Blog(title=request.title,body=request.body,user_id=2)
+def create(request: models.Blog,fastdb: Session,current_user):
+    user = fastdb.query(schema.User).filter(schema.User.email == current_user).first()
+    new_blog = schema.Blog(title=request.title,body=request.body,user_id=user.id)
     fastdb.add(new_blog)
     fastdb.commit()
     fastdb.refresh(new_blog)

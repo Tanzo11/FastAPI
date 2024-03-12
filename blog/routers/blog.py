@@ -22,7 +22,7 @@ def all(fastdb: Session = Depends(get_fastdb),current_user: models.User = Depend
 @router.post('',status_code=status.HTTP_201_CREATED)
 
 def create(request: models.Blog,response=models.ShowBlog,fastdb: Session = Depends(get_fastdb), current_user: models.User = Depends(oauth2.get_current_user)):
-    return blog.create(request,fastdb)
+    return blog.create(request,fastdb,current_user)
 
 
 @router.delete('/{id}',status_code=status.HTTP_204_NO_CONTENT)
