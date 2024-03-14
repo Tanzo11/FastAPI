@@ -4,17 +4,23 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, drop_database, database_exists
 
 
+#Access the database url
+# url = 'postgresql://postgres:Tanzo@localhost:5432/fastdb'
+
 url = 'postgresql://postgres:Tanzo@172.17.0.1:5433/review'
 
 
-'''if not database_exists(url):
+
+"""
+if not database_exists(url):
         
     create_database(url)
 
 else:
     drop_database(url)
-    create_database(url)'''
-
+    print(database_exists(url))
+    create_database(url)
+"""
 engine = create_engine(url,pool_size =50, echo=False)
 
 SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)

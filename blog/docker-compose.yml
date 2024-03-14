@@ -9,7 +9,9 @@ services:
     depends_on:
       - postgres
     # command: ['uvicorn','main:app','--host','127.0.0.1','--port','8000','--reload']
+    # command: uvicorn main:app 
     command: uvicorn main:app --host 0.0.0.0 
+  
   postgres:
     image: postgres:alpine
     restart: always

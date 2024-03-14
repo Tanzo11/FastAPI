@@ -15,6 +15,7 @@ def create(request,fastdb: Session):
     fastdb.refresh(new_user)
     return {"message": "User Created", "user": new_user}
 
+
 def get(id: int,fastdb: Session):
     users=fastdb.query(schema.User).filter(schema.User.id == id).first()
     if not users:

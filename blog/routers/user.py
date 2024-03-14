@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, status, HTTPException
 from sqlalchemy.orm import Session
 import models
 from database import get_fastdb 
+import schema
 from hashing import Hash
 from repository import user
 
