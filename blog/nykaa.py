@@ -13,7 +13,7 @@ engine = en.connect()
 def initialize_driver():
     options = Options()
     # options.headless =True
-    options.add_argument('--headless=new') 
+    # options.add_argument('--headless=new') 
     return webdriver.Chrome(options=options)
 
 def get_products(driver, url, n):
@@ -24,14 +24,13 @@ def get_products(driver, url, n):
     products_dict = []
     scrollHeight = 0
     i = 1
-    while i <= (2 * n):
+    while i <= (10 * n):
         new_scrollHeight = driver.execute_script(f"window.scrollTo({scrollHeight}, ({scrollHeight}+(485)));return document.body.scrollHeight")
         time.sleep(1)
 
         i += 1
         products_list = driver.find_elements(By.CLASS_NAME, "css-1t10dtm")
 
-        print(len(products_list))
 
         for product in products_list:
             product_id = product.get_attribute("href").split("/")[-1]
@@ -80,7 +79,6 @@ def create_products_table():
 def insert_data_into_db(products_dict):
     for row in products_dict:
         row_dict = dict(row)
-        print(row_dict)
         engine.execute(
             text("""
                 INSERT INTO products (product_id, name, description, price, link)

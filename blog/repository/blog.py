@@ -19,10 +19,10 @@ def create(request: models.Blog,fastdb: Session,current_user):
 def destroy(id: int, fastdb: Session):
     blogs = fastdb.query(schema.Blog).filter(schema.Blog.id == id)
     if not blogs.first():
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f'Blog id {id} deleted')
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f'Blog id {id} not deleted')
     blogs.delete(synchronize_session=False)
     fastdb.commit()
-    return 'done'
+    return 'Deleted Sucessfully'
 
 def update(id: int, request:models.Blog, fastdb: Session):
     blogs=fastdb.query(schema.Blog).filter(schema.Blog.id == id).update(dict(request))

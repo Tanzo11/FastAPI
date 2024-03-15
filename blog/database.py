@@ -4,8 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import create_database, drop_database, database_exists
 
 
-#Access the database url
-# url = 'postgresql://postgres:Tanzo@localhost:5432/fastdb'
 
 url = 'postgresql://postgres:Tanzo@172.17.0.1:5433/review'
 

@@ -7,17 +7,7 @@ from database import engine as en
 from sqlalchemy import text
 
 engine = en.connect()
-# Connect to the database
-# conn = psycopg2.connect(
-#     dbname="review",
-#     user="postgres",
-#     password="Tanzo",
-#     host="172.17.0.1",
-#     port="5433"
-# )
 
-# Create a cursor
-# cur = conn.cursor()
 
 # Alter the table to add a new column
 engine.execute(text("ALTER TABLE products ADD COLUMN IF NOT EXISTS generalized_description TEXT"))
@@ -31,13 +21,13 @@ products = result.fetchall()
 # if not stopwords.words("english"):
 #     nltk.download("stopwords")
 # nltk.download("stopwords")
-nltk.download("punkt")
+# nltk.download("punkt")
 # nltk.download("corpus")
 
 
 # Remove stop words from descriptions
 stop_words = set(stopwords.words("english"))
-additional_stopwords = set([':', '('])
+additional_stopwords = set([':', '(',')'])
 stop_words.update(additional_stopwords)
 
 
@@ -70,7 +60,6 @@ engine.execute(text("""
 # Fetch generalized descriptions from the products table
 des=engine.execute(text("SELECT product_id, generalized_description FROM products"))
 descriptions = des.fetchall()
-print(description)
 # Remove stop words from descriptions and count the occurrences of each word
 word_counts = Counter()
 for product_id, description in descriptions:
