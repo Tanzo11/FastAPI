@@ -8,7 +8,8 @@ from repository import blog
 
 router = APIRouter(
     prefix="/blog",
-    tags=['Blogs']
+    tags=['Blogs'],
+    dependencies=[Depends(oauth2.JWTBearer)]
 
 )
 
