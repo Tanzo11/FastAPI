@@ -1,27 +1,65 @@
-from sqlalchemy import Column,Integer,String,ForeignKey
-from database import Base
-from sqlalchemy.orm import relationship
+from typing import List
+from pydantic import BaseModel, validator , EmailStr 
+
+class Blog(BaseModel):
+    title: str
+    body: str
 
 
-
-class Blog(Base):
-
-    __tablename__ = 'blogs'
+class BlogBase(Blog):
+    class Config():
+        from_attributes =True     
     
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String)
-    body = Column(String)
-    user_id = Column(Integer, ForeignKey('usersdetails.id'))
 
-    creator = relationship("User",back_populates="blogs")
 
-class User(Base):
-    __tablename__ = 'usersdetails'
+class User(BaseModel):
+    name:str
+    email: EmailStr
+    password:str
+    phone:str
 
-    id = Column(Integer, primary_key=True, index=True)
-    name = Column(String, index=True)
-    email = Column(String, unique=True, index=True)
-    password = Column(String)
-    phone = Column(String)
+    @validator("phone")
 
-    blogs = relationship('Blog',back_populates="creator")
+    def check_key_length(cls,value):
+        if len(value)!=10 or not(value.isdigit()):
+            raise ValueError("Enter valid phone number")
+        return value
+
+
+class ShowUser(BaseModel):
+    name:str 
+    email:str 
+    phone:str 
+    blogs : List[BlogBase]=[]
+    class Config():
+        from_attributes =True
+
+
+    
+class ShowBlog(BaseModel):
+    title:str
+    body:str
+    
+    class Config():
+        from_attributes =True
+
+class UserCreate(BaseModel):
+    message: str
+    user : ShowUser | None
+    class Config():
+        from_attributes =True
+
+class Login(BaseModel):
+    
+    email: EmailStr
+    password:str
+    
+    
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    email: EmailStr | None = None

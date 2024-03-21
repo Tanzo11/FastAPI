@@ -1,66 +1,27 @@
-from typing import List
-from pydantic import BaseModel, validator , EmailStr 
-
-class Blog(BaseModel):
-    title: str
-    body: str
+from sqlalchemy import Column,Integer,String,ForeignKey
+from database import Base
+from sqlalchemy.orm import relationship
 
 
-class BlogBase(Blog):
-    class Config():
-        from_attributes =True     
+
+class Blog(Base):
+
+    __tablename__ = 'blogs'
     
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String)
+    body = Column(String)
+    user_id = Column(Integer, ForeignKey('usersdetails.id'))
 
+    creator = relationship("User",back_populates="blogs")
 
-"""class ShowBlog(Blog):
-    class Config():
-        orm_mode=True"""
+class User(Base):
+    __tablename__ = 'usersdetails'
 
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, index=True)
+    email = Column(String, unique=True, index=True)
+    password = Column(String)
+    phone = Column(String)
 
-
-
-class User(BaseModel):
-    name:str
-    email: EmailStr
-    password:str
-    phone:str
-
-    @validator("phone")
-
-    def check_key_length(cls,value):
-        if len(value)!=10 or not(value.isdigit()):
-            raise ValueError("Enter valid phone number")
-        return value
-
-
-class ShowUser(BaseModel):
-    name:str
-    email:str
-    phone:str 
-    blogs : List[BlogBase]=[]
-    class Config():
-        from_attributes =True     
-    
-class ShowBlog(BaseModel):
-    title:str
-    body:str
-    #creator: ShowUser
-    class Config():
-        #orm_mode=True
-        from_attributes =True
-
-class Login(BaseModel):
-    #name: str
-    email: EmailStr
-    password:str
-    """class Config():
-        from_attributes =True"""
-    
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-    email: EmailStr | None = None
+    blogs = relationship('Blog',back_populates="creator")
